@@ -2,8 +2,7 @@ name: Extract Expressly Zip
 
 on:
   push:
-    paths:
-      - '*.zip'
+  workflow_dispatch:
 
 jobs:
   unzip:
