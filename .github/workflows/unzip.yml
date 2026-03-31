@@ -1,4 +1,4 @@
-name: Unzip file
+name: Extract Expressly Zip
 
 on:
   push:
@@ -8,14 +8,21 @@ on:
 jobs:
   unzip:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Unzip file
-        run: unzip yourfile.zip
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Verify files
+        run: ls -l
+
+      - name: Unzip Expressly-main.zip
+        run: unzip Expressly-main.zip
+
       - name: Commit extracted files
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add .
-          git commit -m "Extract zip"
+          git commit -m "Extract Expressly-main.zip"
           git push
