@@ -1,0 +1,41 @@
+name: Extract and Flatten Expressly Zip
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Show files (debug)
+        run: ls -R
+
+      - name: Clean old extracted files (optional)
+        run: rm -rf Expressly-main
+
+      - name: Unzip into temp folder
+        run: unzip Expressly-main.zip -d temp
+
+      - name: Move files to root (flatten)
+        run: |
+          mv temp/Expressly-main/* .
+          rm -rf temp
+
+      - name: Remove zip file (optional)
+        run: rm Expressly-main.zip
+
+      - name: Commit extracted files
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add .
+          git diff --cached --quiet || git commit -m "Extract and flatten Expressly-main.zip"
+          git push
